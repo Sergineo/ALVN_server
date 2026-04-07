@@ -1,0 +1,18 @@
+
+ktor:
+  application:
+    modules:
+      - com.hornet.ApplicationKt.module
+  deployment:
+    port: ${DEPLOY_PORT}
+    host: ${DEPLOY_HOST}
+postgres:
+  url: ${POSTGRES_URL}
+  driver: ${POSTGRES_DRIVER}
+  user: ${POSTGRES_USERNAME}
+  password: ${POSTGRES_PASSWORD}
+s3:
+  baseurl: ${MINIO_HOST}
+  username: ${MINIO_ACCESS_KEY}
+  password: ${MINIO_SECRET_KEY}
+  bucket: ${MINIO_BUCKET_NAME}
