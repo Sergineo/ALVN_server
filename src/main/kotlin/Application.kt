@@ -68,7 +68,7 @@ fun Application.module()
 //    result.forEach {
 //        println("${it.article}, ${it.quantity};")
 //    }
-    print(repository.sizesRepositoryImpl.getSizesRangeByFurnitureTypeId(1))
+//    print(repository.sizesRepositoryImpl.getSizesRangeByFurnitureTypeId(1))
 
 //    furnitureRoutes()
 
