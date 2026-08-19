@@ -8,8 +8,6 @@ fun configureShema() {
     transaction {
         addLogger(StdOutSqlLogger)
 
-        //Изменение стуктуры базы данных
-
         commit()
     }
 }

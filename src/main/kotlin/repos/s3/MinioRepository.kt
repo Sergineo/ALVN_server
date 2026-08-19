@@ -1,6 +1,5 @@
-package com.hornet.repos
+package com.hornet.repos.s3
 
-import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationEnvironment
 import io.minio.GetPresignedObjectUrlArgs
 import io.minio.MinioClient

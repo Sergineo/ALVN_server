@@ -31,13 +31,21 @@ dependencies {
     implementation("io.minio:minio:8.5.7")
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
     implementation("ch.qos.logback:logback-classic:$logback_version")
-    val exposedVersion = "0.41.1"
+    val exposedVersion = "0.44.0"
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-json:${exposedVersion}")
     implementation("org.postgresql:postgresql:42.7.2")
 
     // PostgreSQL драйвер
     implementation("org.postgresql:postgresql:42.6.0")
+
+    //Docs
+    implementation("io.ktor:ktor-server-swagger-jvm:3.4.1")
+
+    //Excel
+    implementation("org.jetbrains.kotlinx:dataframe:0.15.0")
+    implementation("org.jetbrains.kotlinx:dataframe-excel:0.15.0")
 
     implementation("io.ktor:ktor-server-config-yaml")
     testImplementation("io.ktor:ktor-server-test-host")

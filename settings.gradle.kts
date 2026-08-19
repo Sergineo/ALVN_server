@@ -1,4 +1,4 @@
-rootProject.name = "Fridge_planner_server"
+rootProject.name = "ALVN_Server"
 
 dependencyResolutionManagement {
     repositories {
