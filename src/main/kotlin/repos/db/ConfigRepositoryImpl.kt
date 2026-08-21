@@ -23,15 +23,15 @@ class ConfigRepositoryImpl {
         val configDto = transaction {
             Config.slice(listOf(Config.config)).select {
                 (
-                        ((Config.config_id_type eq params.config_id_type) or (Config.config_id_type.isNull())) and
-                                ((Config.config_id_size eq params.config_id_size) or (Config.config_id_size.isNull())) and
-                                ((Config.config_id_side eq params.config_id_side) or (Config.config_id_side.isNull())) and
-                                ((Config.config_id_weight eq params.config_id_weight) or (Config.config_id_weight.isNull())) and
-                                ((Config.config_id_color eq params.config_id_color) or (Config.config_id_color.isNull()))
-                        ) or
-                        (
-                                Config.config_id_option inList params.config_id_option
-                                )
+                    (
+                        (Config.config_id_type eq params.config_id_type) or (Config.config_id_type.isNull())) and
+                        ((Config.config_id_size eq params.config_id_size) or (Config.config_id_size.isNull())) and
+                        ((Config.config_id_side eq params.config_id_side) or (Config.config_id_side.isNull())) and
+                        ((Config.config_id_weight eq params.config_id_weight) or (Config.config_id_weight.isNull())) and
+                        ((Config.config_id_color eq params.config_id_color) or (Config.config_id_color.isNull()))
+                    ) or (
+                        Config.config_id_option inList params.config_id_option
+                    )
             }.map { it.queryToConfig() }
         }
 

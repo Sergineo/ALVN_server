@@ -1,5 +1,6 @@
 package com.hornet.repos.db
 
+import com.hornet.mappers.toPartOptionDto
 import com.hornet.model.db.PartOptions
 import com.hornet.model.db.PartWeight
 import com.hornet.service.DbRepository
@@ -16,5 +17,8 @@ class PartOptionsRepositoryImpl: DbRepository {
         } else { null }
     }
 
-    override fun selectAllAnyTable() = transaction { PartOptions.selectAll().toList() }
+    override fun selectAllAnyTable() =
+        transaction {
+            PartOptions.selectAll().toList().map{ it.toPartOptionDto() }
+        }
 }

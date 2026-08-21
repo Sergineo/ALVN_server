@@ -4,6 +4,7 @@ import com.hornet.config.configureShema
 import com.hornet.config.connectToPostgres
 import com.hornet.config.setTransferFormatData
 import com.hornet.config.swaggerConfig
+import com.hornet.controller.furnitureRoutes
 import com.hornet.dto.ConfigInsertDto
 import com.hornet.dto.Item
 import com.hornet.model.app.Params
@@ -21,10 +22,7 @@ import io.ktor.server.application.*
 import io.ktor.server.netty.*
 import kotlin.collections.forEachIndexed
 
-fun main(args: Array<String>) {
-    EngineMain.main(args)
-
-}
+fun main(args: Array<String>) { EngineMain.main(args) }
 
 fun Application.module()
 {
@@ -68,9 +66,10 @@ fun Application.module()
 //    result.forEach {
 //        println("${it.article}, ${it.quantity};")
 //    }
-//    print(repository.sizesRepositoryImpl.getSizesRangeByFurnitureTypeId(1))
 
-//    furnitureRoutes()
+
+
+    furnitureRoutes(repository, configService)
 
 //    val minioConfig = connectToS3()
 //    val repository = MinioRepository(minioConfig, this.environment)

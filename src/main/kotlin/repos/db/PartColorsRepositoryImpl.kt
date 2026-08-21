@@ -1,5 +1,6 @@
 package com.hornet.repos.db
 
+import com.hornet.mappers.toPartColorDto
 import com.hornet.model.db.PartColors
 import com.hornet.model.db.PartWeight
 import com.hornet.service.DbRepository
@@ -16,5 +17,7 @@ class PartColorsRepositoryImpl: DbRepository {
         } else { null }
     }
 
-    override fun selectAllAnyTable() = transaction { PartColors.selectAll().toList() }
+    override fun selectAllAnyTable() = transaction {
+        PartColors.selectAll().toList().map{ it.toPartColorDto() }
+    }
 }

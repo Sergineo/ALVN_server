@@ -1,6 +1,7 @@
 package com.hornet.repos.db
 
 import com.hornet.mappers.toIntSizeRange
+import com.hornet.mappers.toPartSideDto
 import com.hornet.model.db.PartSide
 import com.hornet.model.db.Parts
 import com.hornet.model.db.Sizes
@@ -19,5 +20,7 @@ class PartSideRepositoryImpl: DbRepository {
         } else { null }
     }
 
-    override fun selectAllAnyTable() = transaction { PartSide.selectAll().toList() }
+    override fun selectAllAnyTable() = transaction {
+        PartSide.selectAll().toList().map{ it.toPartSideDto() }
+    }
 }

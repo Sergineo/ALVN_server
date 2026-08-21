@@ -25,7 +25,9 @@ class SizesRepositoryImpl : DbRepository {
         }
     }
 
-    override fun selectAllAnyTable() = transaction { Sizes.selectAll().toList() }
+    override fun selectAllAnyTable() = transaction {
+        Sizes.selectAll().toList().map{ it.toSizesDto() }
+    }
 
     fun getSizesRangeByFurnitureTypeId(typeId: Int): List<SizesDto> {
         return transaction {
