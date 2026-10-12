@@ -1,5 +1,6 @@
 package com.hornet.controller
 
+import com.hornet.error.error_handling.ApiRoutingExceptionsHandlingImpl
 import com.hornet.model.app.Params
 import com.hornet.service.ConfigService
 import com.hornet.service.RepositoryInjection
@@ -11,7 +12,8 @@ import io.ktor.server.routing.*
 
 fun Application.furnitureRoutes(
     repository: RepositoryInjection,
-    configService: ConfigService
+    configService: ConfigService,
+    apiRoutingExceptionsHandlingImpl: ApiRoutingExceptionsHandlingImpl = ApiRoutingExceptionsHandlingImpl()
 ) {
     routing {
         get("/furniture/types") {
@@ -20,7 +22,7 @@ fun Application.furnitureRoutes(
                 call.respond(HttpStatusCode.OK, response)
             } catch (e: Exception) {
                 call.respondText(
-                    e.toString(),
+                    e.message.toString(),
                     status = HttpStatusCode.InternalServerError,
                     contentType = ContentType.Text.Plain
                 )
@@ -29,13 +31,16 @@ fun Application.furnitureRoutes(
         get("/furniture/sizes/{id_type}") {
             try {
                 val idType = call.parameters["id_type"]?.toIntOrNull()
-                if (idType == null) call.respond(HttpStatusCode.BadRequest) else {
-                    val response = repository.sizesRepositoryImpl.getSizesRangeByFurnitureTypeId(idType)
-                    call.respond(HttpStatusCode.OK, response)
-                }
+                val response = apiRoutingExceptionsHandlingImpl.checkFormatIdForWeightRequest(
+                    id = idType,
+                    callback = { id ->
+                        repository.sizesRepositoryImpl.getSizesRangeByFurnitureTypeId(id)
+                    }
+                )
+                call.respond(HttpStatusCode.OK, response)
             } catch (e: Exception) {
                 call.respondText(
-                    e.toString(),
+                    e.message.toString(),
                     status = HttpStatusCode.InternalServerError,
                     contentType = ContentType.Text.Plain
                 )
@@ -48,7 +53,7 @@ fun Application.furnitureRoutes(
                 call.respond(HttpStatusCode.OK, response)
             } catch (e: Exception) {
                 call.respondText(
-                    e.toString(),
+                    e.message.toString(),
                     status = HttpStatusCode.InternalServerError,
                     contentType = ContentType.Text.Plain
                 )
@@ -60,7 +65,7 @@ fun Application.furnitureRoutes(
                 call.respond(HttpStatusCode.OK, response)
             } catch (e: Exception) {
                 call.respondText(
-                    e.toString(),
+                    e.message.toString(),
                     status = HttpStatusCode.InternalServerError,
                     contentType = ContentType.Text.Plain
                 )
@@ -72,7 +77,7 @@ fun Application.furnitureRoutes(
                 call.respond(HttpStatusCode.OK, response)
             } catch (e: Exception) {
                 call.respondText(
-                    e.toString(),
+                    e.message.toString(),
                     status = HttpStatusCode.InternalServerError,
                     contentType = ContentType.Text.Plain
                 )
@@ -91,12 +96,47 @@ fun Application.furnitureRoutes(
                     ?: emptyList()
 
                 val params = Params(
-                    config_id_type = configIdType,
-                    config_id_size = configIdSize,
-                    config_id_side = configIdSide,
-                    config_id_weight = configIdWeight,
-                    config_id_color = configIdColor,
-                    config_id_option = configIdOption
+                    config_id_type =
+                        apiRoutingExceptionsHandlingImpl.checkFormatNullableIdForConfigRequest(
+                            id = configIdType,
+                            callback = { id ->
+                                repository.furnitureTypeRepositoryImpl.checkNullableIdForExisting(id)
+                            }
+                        ),
+                    config_id_size =
+                        apiRoutingExceptionsHandlingImpl.checkFormatNullableIdForConfigRequest(
+                            id = configIdSize,
+                            callback = { id ->
+                                repository.sizesRepositoryImpl.checkNullableIdForExisting(id)
+                            }
+                        ),
+                    config_id_side =
+                        apiRoutingExceptionsHandlingImpl.checkFormatNullableIdForConfigRequest(
+                            id = configIdSide,
+                            callback = { id ->
+                                repository.partSideRepositoryImpl.checkNullableIdForExisting(id)
+                            }
+                        ),
+                    config_id_weight = apiRoutingExceptionsHandlingImpl.checkFormatNullableIdForConfigRequest(
+                        id = configIdWeight,
+                        callback = { id ->
+                            repository.partWeightRepositoryImpl.checkNullableIdForExisting(id)
+                        }
+                    ),
+                    config_id_color = apiRoutingExceptionsHandlingImpl.checkFormatNullableIdForConfigRequest(
+                        id = configIdColor,
+                        callback = { id ->
+                            repository.partColorsRepositoryImpl.checkNullableIdForExisting(id)
+                        }
+                    ),
+                    config_id_option = configIdOption.map {
+                        apiRoutingExceptionsHandlingImpl.checkFormatIdForConfigRequest(
+                            id = it,
+                            callback = { id ->
+                                repository.partOptionsRepositoryImpl.checkIdForExisting(id)
+                            }
+                        )
+                    }
                 )
 
                 val response = configService.getConfig(params)
@@ -104,7 +144,7 @@ fun Application.furnitureRoutes(
                 call.respond(HttpStatusCode.OK, response)
             } catch (e: Exception) {
                 call.respondText(
-                    e.localizedMessage ?: e.toString(),
+                    e.message.toString(),
                     status = HttpStatusCode.InternalServerError,
                     contentType = ContentType.Text.Plain
                 )

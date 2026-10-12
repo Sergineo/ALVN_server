@@ -1,5 +1,6 @@
 package com.hornet
 
+import com.hornet.config.configureImageLoader
 import com.hornet.config.configureShema
 import com.hornet.config.connectToPostgres
 import com.hornet.config.setTransferFormatData
@@ -32,6 +33,8 @@ fun Application.module()
     configureShema()
 
     swaggerConfig()
+
+    configureImageLoader()
 
     val repository = RepositoryInjectionImpl(
         partsRepositoryImpl = PartsRepositoryImpl(),

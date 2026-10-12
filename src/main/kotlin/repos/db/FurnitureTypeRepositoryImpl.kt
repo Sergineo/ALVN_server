@@ -2,7 +2,6 @@ package com.hornet.repos.db
 
 import com.hornet.mappers.toFurnitureTypeDto
 import com.hornet.model.db.FurnitureType
-import com.hornet.model.db.Parts
 import com.hornet.service.DbRepository
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.selectAll
@@ -21,6 +20,16 @@ class FurnitureTypeRepositoryImpl : DbRepository {
 
     override fun selectAllAnyTable() = transaction {
         FurnitureType.selectAll().orderBy(FurnitureType.id_type).toList()
-            .map{ it.toFurnitureTypeDto() }
+            .map { it.toFurnitureTypeDto() }
+    }
+
+    override fun checkNullableIdForExisting(id: Int?): Boolean {
+        if (id == null) return true
+        val result = transaction {
+            FurnitureType.slice(FurnitureType.id_type).selectAll()
+                .adjustWhere { FurnitureType.id_type eq id }
+                .map { it[FurnitureType.id_type] }.firstOrNull()
+        }
+        return result != null
     }
 }

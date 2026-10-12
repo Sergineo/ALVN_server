@@ -9,4 +9,5 @@ object PartWeight: Table("part_weight") {
     val id_weight = integer("id_type").autoIncrement()
     override val primaryKey: PrimaryKey = PrimaryKey(id_weight)
     val weight = varchar("part_weight", 60)
+    val image_name = varchar("image_name", 255).nullable()
 }

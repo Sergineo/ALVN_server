@@ -7,4 +7,5 @@ object PartColors: Table("part_colors"){
     override val primaryKey = PrimaryKey(id_color)
     val color_name = varchar("color_name", 60)
     val hex_code = varchar("hex_code", 7)
+    val image_name = varchar("image_name", 255).nullable()
 }

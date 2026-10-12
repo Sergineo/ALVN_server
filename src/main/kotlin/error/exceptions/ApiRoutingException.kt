@@ -1,9 +1,9 @@
 package com.hornet.error.exceptions
 
-open class ApiRoutingExceptions(description: String = "") : Exception(description)
+sealed class ApiRoutingException(val description: String = "") : Exception(description)
 
-class IncorrectRequestBody :
-    ApiRoutingExceptions("Параметры запроса не соответствуют данному URL")
+class IncorrectRequestBodyException :
+    ApiRoutingException("Параметры запроса не соответствуют данному URL")
 
-class NonExistId :
-    ApiRoutingExceptions("Некорректный формат числа id")
+class NonExistIdException :
+    ApiRoutingException("Некорректный формат числа id")

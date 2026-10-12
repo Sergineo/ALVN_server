@@ -2,7 +2,6 @@ package com.hornet.repos.db
 
 import com.hornet.mappers.toPartColorDto
 import com.hornet.model.db.PartColors
-import com.hornet.model.db.PartWeight
 import com.hornet.service.DbRepository
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.selectAll
@@ -19,5 +18,15 @@ class PartColorsRepositoryImpl: DbRepository {
 
     override fun selectAllAnyTable() = transaction {
         PartColors.selectAll().toList().map{ it.toPartColorDto() }
+    }
+
+    override fun checkNullableIdForExisting(id: Int?): Boolean {
+        if (id == null) return true
+        val result = transaction {
+            PartColors.slice(PartColors.id_color).selectAll()
+                .adjustWhere { PartColors.id_color eq id }
+                .map { it[PartColors.id_color] }.firstOrNull()
+        }
+        return result != null
     }
 }

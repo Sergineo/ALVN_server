@@ -35,10 +35,21 @@ class SizesRepositoryImpl : DbRepository {
                 Sizes.id_size,
                 Sizes.max_width,
                 Sizes.max_height,
+                Sizes.image_name,
                 Config.config_id_type
             ).selectAll().adjustWhere {
                 Config.config_id_type eq typeId
             }.toList().map{ it.toSizesDto() }
         }
+    }
+
+    override fun checkNullableIdForExisting(id: Int?): Boolean {
+        if (id == null) return true
+        val result = transaction {
+            Sizes.slice(Sizes.id_size).selectAll()
+                .adjustWhere { Sizes.id_size eq id }
+                .map { it[Sizes.id_size] }.firstOrNull()
+        }
+        return result != null
     }
 }

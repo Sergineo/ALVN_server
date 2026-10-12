@@ -9,4 +9,5 @@ object PartSide: Table("part_side") {
     val id_side = integer("id_side").autoIncrement()
     override val primaryKey = PrimaryKey(id_side)
     val part_side = varchar("part_side", 20)
+    val image_name = varchar("image_name", 255).nullable()
 }

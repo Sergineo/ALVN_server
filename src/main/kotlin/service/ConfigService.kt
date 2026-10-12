@@ -18,6 +18,8 @@ import org.jetbrains.kotlinx.dataframe.api.rows
 import org.jetbrains.kotlinx.dataframe.api.select
 import org.jetbrains.kotlinx.dataframe.api.take
 import org.jetbrains.kotlinx.dataframe.io.readExcel
+import java.io.File
+import java.io.FileNotFoundException
 
 class ConfigService(
     private val repository: RepositoryInjection
@@ -56,6 +58,22 @@ class ConfigService(
         return result.listToUiConfigList(resultList)
     }
 
+    /**
+     * Проверяет входной Excel-файл до чтения DataFrame.
+     * Метод намеренно публичный, чтобы его можно было отдельно проверить из тестов/контроллера.
+     */
+    fun validateExcelFileExists(path: String): File {
+        val file = File(path).canonicalFile
+        if (!file.exists() || !file.isFile || !file.canRead()) {
+            throw FileNotFoundException("Excel-файл не найден или недоступен для чтения: ${file.absolutePath}")
+        }
+        val extension = file.name.substringAfterLast('.', "").lowercase()
+        require(extension in setOf("xls", "xlsx")) {
+            "Ожидался Excel-файл (.xls или .xlsx), получено: .$extension"
+        }
+        return file
+    }
+
     fun insertNewConfigByCalibrationCell(
         path: String,
         sheetName: String,
@@ -64,8 +82,9 @@ class ConfigService(
         defaultColumnQuantity: Int = 9
     ): Result<List<ConfigInsertDto>> {
         val configList: MutableList<ConfigInsertDto> = mutableListOf()
+        val excelFile = validateExcelFileExists(path)
         val frame: AnyFrame = DataFrame.readExcel(
-            fileOrUrl = path,
+            fileOrUrl = excelFile.absolutePath,
             sheetName = sheetName,
             firstRowIsHeader = false,
         )
