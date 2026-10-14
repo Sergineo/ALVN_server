@@ -33,4 +33,5 @@ class PartsRepositoryImpl {
 //            }
 //        }.toString().toInt() else { null }
 //    }
+//    fun getImges
 }

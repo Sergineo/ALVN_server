@@ -1,6 +1,6 @@
 package com.hornet.error.exceptions
 
-sealed class ApiRoutingException(val description: String = "") : Exception(description)
+sealed class ApiRoutingException(description: String = "") : Exception(description)
 
 class IncorrectRequestBodyException :
     ApiRoutingException("Параметры запроса не соответствуют данному URL")

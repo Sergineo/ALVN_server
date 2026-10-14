@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class PartOptionsDto(
     val id_option: Int = 0,
     val option_name: String = "",
-    val image: com.hornet.service.ImagePayload? = null
+    val image_name: String? = null
 )

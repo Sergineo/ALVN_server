@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class PartSideDto(
     val id_side: Int = 0,
     val part_side: String = "",
-    val image: com.hornet.service.ImagePayload? = null
+    val image_name: String? = null
 )

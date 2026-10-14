@@ -4,6 +4,7 @@ import com.hornet.error.error_handling.ApiRoutingExceptionsHandlingImpl
 import com.hornet.model.app.Params
 import com.hornet.service.ConfigService
 import com.hornet.service.RepositoryInjection
+import com.hornet.service.prepareImageAnyResponse
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -19,7 +20,10 @@ fun Application.furnitureRoutes(
         get("/furniture/types") {
             try {
                 val response = repository.furnitureTypeRepositoryImpl.selectAllAnyTable()
-                call.respond(HttpStatusCode.OK, response)
+                call.respond(
+                    HttpStatusCode.OK,
+                    response
+                )
             } catch (e: Exception) {
                 call.respondText(
                     e.message.toString(),

@@ -15,6 +15,5 @@ s3:
   username: ${MINIO_ACCESS_KEY}
   password: ${MINIO_SECRET_KEY}
   bucket: ${MINIO_BUCKET_NAME}
-images_files:
-  java_key: ${JAVA_KEY_STRING}
-  path: ${IMAGE_RESOURCE_PATH}
+static:
+  images_route: ${IMAGE_RESOURCE_ROUTE}

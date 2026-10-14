@@ -1,27 +1,13 @@
 package com.hornet
 
-import com.hornet.config.configureImageLoader
-import com.hornet.config.configureShema
-import com.hornet.config.connectToPostgres
-import com.hornet.config.setTransferFormatData
-import com.hornet.config.swaggerConfig
+import com.hornet.config.*
 import com.hornet.controller.furnitureRoutes
 import com.hornet.dto.ConfigInsertDto
 import com.hornet.dto.Item
-import com.hornet.model.app.Params
-import com.hornet.repos.db.PartColorsRepositoryImpl
-import com.hornet.repos.db.ConfigRepositoryImpl
-import com.hornet.repos.db.FurnitureTypeRepositoryImpl
-import com.hornet.repos.db.PartOptionsRepositoryImpl
-import com.hornet.repos.db.PartSideRepositoryImpl
-import com.hornet.repos.db.PartWeightRepositoryImpl
-import com.hornet.repos.db.PartsRepositoryImpl
-import com.hornet.repos.db.RepositoryInjectionImpl
-import com.hornet.repos.db.SizesRepositoryImpl
+import com.hornet.repos.db.*
 import com.hornet.service.ConfigService
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
-import kotlin.collections.forEachIndexed
 
 fun main(args: Array<String>) { EngineMain.main(args) }
 
@@ -33,8 +19,6 @@ fun Application.module()
     configureShema()
 
     swaggerConfig()
-
-    configureImageLoader()
 
     val repository = RepositoryInjectionImpl(
         partsRepositoryImpl = PartsRepositoryImpl(),
@@ -72,6 +56,7 @@ fun Application.module()
 
 
 
+    configureStaticRouting()
     furnitureRoutes(repository, configService)
 
 //    val minioConfig = connectToS3()

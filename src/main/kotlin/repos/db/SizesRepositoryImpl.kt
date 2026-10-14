@@ -35,7 +35,6 @@ class SizesRepositoryImpl : DbRepository {
                 Sizes.id_size,
                 Sizes.max_width,
                 Sizes.max_height,
-                Sizes.image_name,
                 Config.config_id_type
             ).selectAll().adjustWhere {
                 Config.config_id_type eq typeId
