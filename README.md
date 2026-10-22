@@ -1,5 +1,7 @@
 # ALVN_server
 
+Серверное приложение расчёта комплектаций оконной фурнитуры принимающее и обрабатывающее любые спецификации
+
 This project was created using the [Ktor Project Generator](https://start.ktor.io).
 
 Here are some useful links to get you started:
